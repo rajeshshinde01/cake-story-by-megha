@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 
 const navigation=[
+  ['Home','top'],
   ['Cakes','cakes'],
   ['Flavours','flavours'],
   ['Build yours','builder'],
@@ -13,6 +14,12 @@ const navigation=[
 export default function Header(){
   const [open,setOpen]=useState(false);
   const close=()=>setOpen(false);
+  const goHome=event=>{
+    event.preventDefault();
+    close();
+    window.scrollTo({top:0,left:0,behavior:'auto'});
+    window.history.replaceState(null,'',`${window.location.pathname}${window.location.search}`);
+  };
 
   useEffect(()=>{
     document.body.classList.toggle('menu-open',open);
@@ -25,7 +32,7 @@ export default function Header(){
   },[open]);
 
   return <header className="site-header" id="top">
-    <a className="brand brand-logo brand-lockup" href="#top" aria-label="Cake Story by Megha home" onClick={close}>
+    <a className="brand brand-logo brand-lockup" href="#top" aria-label="Cake Story by Megha home" onClick={goHome}>
       <span className="logo-frame"><img src="/assets/cake-story-logo-320.png" alt="Cake Story By Megha Official Logo"/></span>
       <span className="brand-lockup-copy"><strong>Cake Story</strong><small>by Megha</small><i>Homemade with love</i></span>
     </a>
@@ -39,7 +46,7 @@ export default function Header(){
         <span>Explore Cake Story</span>
       </div>
       <div className="mobile-menu-links">
-        {navigation.map(([label,id],index)=><a key={id} href={`#${id}`} onClick={close}><span>{String(index+1).padStart(2,'0')}</span>{label}<i>→</i></a>)}
+        {navigation.map(([label,id])=><a key={id} href={`#${id}`} onClick={id==='top'?goHome:close}>{label}<i>→</i></a>)}
       </div>
       <a className="button button-primary mobile-menu-cta" href="#builder" onClick={close}>Create your cake <span>→</span></a>
       <small className="mobile-menu-note">Handcrafted with care in Dighi, Pune</small>
