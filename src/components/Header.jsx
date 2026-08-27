@@ -1,15 +1,20 @@
 import {useEffect,useState} from 'react';
 
 const navigation=[
-  ['Home','top'],
   ['Cakes','cakes'],
   ['Flavours','flavours'],
   ['Build yours','builder'],
   ['Gallery','gallery'],
+  ['Our story','story'],
   ['Reviews','reviews'],
   ['FAQ','faq'],
   ['Contact','contact'],
 ];
+
+const returnToHome=()=>{
+  window.scrollTo({top:0,left:0,behavior:'auto'});
+  window.history.replaceState(null,'',`${window.location.pathname}${window.location.search}`);
+};
 
 export default function Header(){
   const [open,setOpen]=useState(false);
@@ -17,17 +22,26 @@ export default function Header(){
   const goHome=event=>{
     event.preventDefault();
     close();
-    window.scrollTo({top:0,left:0,behavior:'auto'});
-    window.history.replaceState(null,'',`${window.location.pathname}${window.location.search}`);
+    returnToHome();
   };
 
   useEffect(()=>{
     document.body.classList.toggle('menu-open',open);
     const handleEscape=event=>{if(event.key==='Escape')setOpen(false)};
+    const handleFooterHome=event=>{
+      if(event.defaultPrevented)return;
+      const link=event.target.closest?.('a[href="#top"]');
+      if(!link)return;
+      event.preventDefault();
+      setOpen(false);
+      returnToHome();
+    };
     window.addEventListener('keydown',handleEscape);
+    document.addEventListener('click',handleFooterHome);
     return ()=>{
       document.body.classList.remove('menu-open');
       window.removeEventListener('keydown',handleEscape);
+      document.removeEventListener('click',handleFooterHome);
     };
   },[open]);
 
