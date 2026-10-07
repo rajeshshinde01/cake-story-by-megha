@@ -19,6 +19,9 @@ pnpm run preview
 
 The deployable output is generated in `dist/` and can be hosted on any static platform.
 
+For complete, platform-neutral build, publishing, update, and rollback steps,
+see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 ## Structure
 
 - `src/components/` — reusable navigation and Cake Builder components
